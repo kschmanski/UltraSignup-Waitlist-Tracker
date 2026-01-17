@@ -1,0 +1,19 @@
+{
+  "name": "kazschmanski/ultrasignup-waitlist-tracker",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Tracker\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kaz Schmanski"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.10",
+    "symfony/dom-crawler": "^8.0",
+    "symfony/css-selector": "^8.0"
+  }
+}
