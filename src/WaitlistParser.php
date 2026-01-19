@@ -33,7 +33,7 @@ class WaitlistParser
             $name = trim($nameLink->text());
 
             // Debug (keep for now)
-            echo "order='{$order}' name='{$name}'\n";
+            // echo "order='{$order}' name='{$name}'\n";
 
             if ($this->namesMatch($name, $targetName)) {
                 return (int) $order;
