@@ -21,4 +21,7 @@ jobs:
         run: composer install
 
       - name: Run the PHP script
+        env:
+          GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: php bin/run.php
