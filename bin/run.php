@@ -62,35 +62,12 @@ try {
     $mail->setFrom('kschmanski1@gmail.com', 'UltraSignup Tracker');
     $mail->addAddress('kschmanski1@gmail.com');
 
-    $mail->Subject = 'UltraSignup Tracker';
+    $mail->Subject = 'UltraSignup Tracker: Elm Creek Backyard Ultra';
     $mail->Body = $message;
 
+    $mail->addAddress('katka.svensson@gmail.com');
     $mail->send();
     echo "SMTP email sent\n";
 } catch (Exception $e) {
     echo "SMTP failed: {$mail->ErrorInfo}\n";
 }
-
-// try {
-//     $testEmailSent = mail(
-//         $mailto,
-//         "Test Subject",
-//         "Test Message",
-//         implode("\r\n", $headers)
-//     );
-
-//     echo "Test email sent? ";
-//     echo $testEmailSent ? "Yes" : "No";
-
-//     $emailSent = mail(
-//         $mailto,
-//         $subject,
-//         $message,
-//         implode("\r\n", $headers)
-//     );
-
-//     echo "\nEmail sent? ";
-//     echo $emailSent ? "Yes" : "No";
-// } catch (Exception $e) {
-//     echo "failed to send email";
-// }
