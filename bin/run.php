@@ -6,8 +6,9 @@ use Dotenv\Dotenv;
 
 $root = dirname(__DIR__);
 
-Dotenv::createImmutable($root)->load();
-
+if (file_exists($root . '/.env')) {
+    Dotenv::createImmutable($root)->load();
+}
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/cron.log');
 
