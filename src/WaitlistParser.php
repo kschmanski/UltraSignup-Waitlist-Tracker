@@ -55,4 +55,17 @@ class WaitlistParser
             $normalize($targetName)
         );
     }
+
+    function parseEventName(string $html): ?string
+    {
+        $crawler = new Crawler($html);
+
+        try {
+            $title = trim($crawler->filter('.event-title')->text());
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return preg_replace('/\s*-\s*UltraSignup\s*$/i', '', $title);
+    }
 }

@@ -45,8 +45,9 @@ $parser = new WaitlistParser();
 
 $html = $scraper->fetch($url);
 $position = $parser->findPosition($html, $targetName);
+$eventName = $parser->parseEventName($html);
 
-error_log("Fetched waitlist position: $position");
+echo $eventName . "\n";
 
 $message = $position === null
     ? "Name not found\n"
@@ -60,8 +61,7 @@ $headers = [
 ];
 
 $mailto = 'kschmanski1@gmail.com';
-$subject = 'UltraSignup Tracker for Elm Creek Backyard Ultra';
-
+$subject = "UltraSignup Tracker for $eventName";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
