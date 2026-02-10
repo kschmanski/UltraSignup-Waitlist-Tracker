@@ -18,6 +18,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Tracker\WaitlistScraper;
 use Tracker\WaitlistParser;
+use Tracker\MailClient;
 
 $options = getopt('', [
     'url:',
@@ -37,8 +38,6 @@ if (!$url || !$targetName) {
 if ($debug) {
     echo "Running in DEBUG mode\n";
 }
-// $url = 'https://ultrasignup.com/event_waitlist.aspx?did=126417';
-// $targetName = 'Kaz Schmanski';
 
 $scraper = new WaitlistScraper();
 $parser = new WaitlistParser();
@@ -55,39 +54,16 @@ $message = $position === null
 
 echo $message;
 
-$headers = [
-    'From: UltraSignup Tracker <kschmanski1@gmail.com>',
-    'Content-Type: text/plain; charset=UTF-8',
-];
-
-$mailto = 'kschmanski1@gmail.com';
-$subject = "UltraSignup Tracker for $eventName";
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 if (!$debug) {
-    $mail = new PHPMailer(true);
+    $recipients = [
+        'kschmanski1@gmail.com',
+        'kschmanski1+1@gmail.com',
+        // 'katka.svensson@gmail.com',
+    ];
+    $subject = "UltraSignup Tracker for $eventName";
 
-    try {
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['GMAIL_SMTP_USER'] ?? getenv('GMAIL_SMTP_USER');
-        $mail->Password = $_ENV['GMAIL_APP_PASSWORD'] ?? getenv('GMAIL_APP_PASSWORD');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+    $mail = new MailClient($recipients, $subject, $message);
 
-        $mail->setFrom('kschmanski1@gmail.com', 'UltraSignup Tracker');
-        $mail->addAddress('kschmanski1@gmail.com');
-
-        $mail->Subject = 'UltraSignup Tracker: Elm Creek Backyard Ultra';
-        $mail->Body = $message;
-
-        $mail->addAddress('katka.svensson@gmail.com');
-        $mail->send();
-        echo "SMTP email sent\n";
-    } catch (Exception $e) {
-        echo "SMTP failed: {$mail->ErrorInfo}\n";
-    }
+    $mail->send();
+    echo "SMTP email sent\n";
 }
