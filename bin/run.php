@@ -57,8 +57,7 @@ echo $message;
 if (!$debug) {
     $recipients = [
         'kschmanski1@gmail.com',
-        'kschmanski1+1@gmail.com',
-        // 'katka.svensson@gmail.com',
+        'katka.svensson@gmail.com',
     ];
     $subject = "UltraSignup Tracker for $eventName";
 
