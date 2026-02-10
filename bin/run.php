@@ -19,9 +19,26 @@ require __DIR__ . '/../vendor/autoload.php';
 use Tracker\WaitlistScraper;
 use Tracker\WaitlistParser;
 
+$options = getopt('', [
+    'url:',
+    'name:',
+    'debug'
+]);
 
-$url = 'https://ultrasignup.com/event_waitlist.aspx?did=126417';
-$targetName = 'Kaz Schmanski';
+$url = $options['url'] ?? null;
+$targetName = $options['name'] ?? null;
+$debug = array_key_exists('debug', $options);
+
+if (!$url || !$targetName) {
+    echo "Usage: php script.php --url=URL --name=NAME [--debug]\n";
+    exit(1);
+}
+
+if ($debug) {
+    echo "Running in DEBUG mode\n";
+}
+// $url = 'https://ultrasignup.com/event_waitlist.aspx?did=126417';
+// $targetName = 'Kaz Schmanski';
 
 $scraper = new WaitlistScraper();
 $parser = new WaitlistParser();
@@ -49,26 +66,28 @@ $subject = 'UltraSignup Tracker for Elm Creek Backyard Ultra';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$mail = new PHPMailer(true);
+if (!$debug) {
+    $mail = new PHPMailer(true);
 
-try {
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = $_ENV['GMAIL_SMTP_USER'] ?? getenv('GMAIL_SMTP_USER');
-    $mail->Password = $_ENV['GMAIL_APP_PASSWORD'] ?? getenv('GMAIL_APP_PASSWORD');
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['GMAIL_SMTP_USER'] ?? getenv('GMAIL_SMTP_USER');
+        $mail->Password = $_ENV['GMAIL_APP_PASSWORD'] ?? getenv('GMAIL_APP_PASSWORD');
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-    $mail->setFrom('kschmanski1@gmail.com', 'UltraSignup Tracker');
-    $mail->addAddress('kschmanski1@gmail.com');
+        $mail->setFrom('kschmanski1@gmail.com', 'UltraSignup Tracker');
+        $mail->addAddress('kschmanski1@gmail.com');
 
-    $mail->Subject = 'UltraSignup Tracker: Elm Creek Backyard Ultra';
-    $mail->Body = $message;
+        $mail->Subject = 'UltraSignup Tracker: Elm Creek Backyard Ultra';
+        $mail->Body = $message;
 
-    $mail->addAddress('katka.svensson@gmail.com');
-    $mail->send();
-    echo "SMTP email sent\n";
-} catch (Exception $e) {
-    echo "SMTP failed: {$mail->ErrorInfo}\n";
+        $mail->addAddress('katka.svensson@gmail.com');
+        $mail->send();
+        echo "SMTP email sent\n";
+    } catch (Exception $e) {
+        echo "SMTP failed: {$mail->ErrorInfo}\n";
+    }
 }

@@ -13,7 +13,7 @@ class WaitlistScraper
         $this->client = new Client([
             'timeout' => 10,
             'headers' => [
-                'User-Agent' => 'UltraSignup Waitlist Tracker (personal use)'
+                'User-Agent' => 'UltraSignup Waitlist Tracker (personal use) - https://github.com/kschmanski/UltraSignup-Waitlist-Tracker'
             ]
         ]);
     }

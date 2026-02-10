@@ -24,4 +24,7 @@ jobs:
         env:
           GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-        run: php bin/run.php
+        run: |
+          php bin/run.php \
+            --name="Kaz Schmanski" \
+            --url="https://ultrasignup.com/event_waitlist.aspx?did=126417"
